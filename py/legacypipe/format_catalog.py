@@ -61,7 +61,7 @@ def format_catalog(T, hdr, primhdr, bands, allbands, outfn, release,
         ind= np.isfinite(T.get(key)) == False
         if np.any(ind):
             T.get(key)[ind]= np.nan
-
+    import pdb ; pdb.set_trace()
     # Expand out FLUX and related fields from grz arrays to 'allbands'
     # (eg, ugrizY) arrays.
     keys = ['flux', 'flux_ivar', 'rchisq', 'fracflux', 'fracmasked', 'fracin',
@@ -94,6 +94,7 @@ def format_catalog(T, hdr, primhdr, bands, allbands, outfn, release,
 
     trans_cols_opt  = []
     trans_cols_wise = []
+    trans_cols_galex = []
 
     for i,b in enumerate(dust_bands):
         col = 'mw_transmission_%s' % b
@@ -104,6 +105,11 @@ def format_catalog(T, hdr, primhdr, bands, allbands, outfn, release,
             col = 'mw_transmission_%s' % b
             T.set(col, 10.**(-wise_ext[:,i] / 2.5))
             trans_cols_wise.append(col)
+    if has_galex:
+        for i,b in enumerate(gbands):
+            col = 'mw_transmission_%s' % b
+            T.set(col, 10.**(-galex_ext[:,i] / 2.5))
+            trans_cols_galex.append(col)
 
     T.release = np.zeros(len(T), np.int16) + release
 
@@ -197,6 +203,7 @@ def format_catalog(T, hdr, primhdr, bands, allbands, outfn, release,
 
     cols.extend(trans_cols_opt)
     cols.extend(trans_cols_wise)
+    cols.extend(trans_cols_galex)
 
     for c in ['nobs', 'rchisq', 'fracflux']:
         add_fluxlike(c)
