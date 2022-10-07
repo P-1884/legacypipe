@@ -2,6 +2,9 @@ import os
 import sys
 import numpy as np
 import fitsio
+sys.path.append('/mnt/zfsusers/hollowayp/astrometry.net-0.91')
+sys.path.append('/mnt/zfsusers/hollowayp/tractor')
+sys.path.append('/mnt/zfsusers/hollowayp/Downloads/DES_Lens_Subtraction/legacypipe/py/legacypipe')
 from astrometry.util.fits import fits_table
 from astrometry.util.util import Tan
 from tractor import Tractor
